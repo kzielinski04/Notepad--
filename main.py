@@ -4,10 +4,12 @@ import tkinter.filedialog
 import tkinter.colorchooser
 import tkinter.font
 import tkinter.messagebox
+import tkinter.ttk
 import os
 import json
 import random
 import sys
+import time
 
 class Icons:
     def __init__(self):
@@ -477,7 +479,7 @@ class PreferencesManager:
             for (index, theme) in zip(range(len(self.themes)), self.themes):
                 if theme_id[0] == index:
                     self.notepad.text.config(bg=theme["background_color"],
-                                     fg=theme["foreground_color"])
+                                             fg=theme["foreground_color"])
                     return
             add_new_theme()
 
@@ -746,12 +748,22 @@ class EditorManager:
             replace = replace_entry.get()
             result = content.replace(find, replace)
             match_count = content.count(find)
-            self.clear_text()
-            self.notepad.text.insert(1.0, result)
             if match_count == 0:
                 tkinter.messagebox.showinfo(title="No Matches", message="No matches found")
-            else:
-                tkinter.messagebox.showinfo(title="Find & Replace Completed", message=f"Replaced {match_count} occurences")
+                return
+            find_and_replace_progress_bar.grid(row=3, column=0, columnspan=2)
+            find_and_replace_progress_bar_label.grid(row=4, column=0, columnspan=2)
+            find_and_replace_window.update()
+            replaced_count = 0
+            while replaced_count < match_count:
+                find_and_replace_progress_bar["value"] += (100 / match_count)
+                percent.set(f"{int((replaced_count * 100) / match_count)}%")
+                time.sleep(0.01)
+                replaced_count += 1
+                find_and_replace_window.update_idletasks()
+            self.clear_text()
+            self.notepad.text.insert(1.0, result)
+            tkinter.messagebox.showinfo(title="Find & Replace Completed", message=f"Replaced {match_count} occurences")
             find_and_replace_window.destroy()
         if self.text_is_empty():
             tkinter.messagebox.showwarning(title="Empty File", message="This file is empty")
@@ -789,6 +801,12 @@ class EditorManager:
                            column=0,
                            columnspan=2,
                            pady=5)
+        percent = tkinter.StringVar(value="0%")
+        find_and_replace_progress_bar = tkinter.ttk.Progressbar(find_and_replace_window,
+                                                                orient=tkinter.HORIZONTAL,
+                                                                length=300)
+        find_and_replace_progress_bar_label = tkinter.Label(find_and_replace_window,
+                                                            textvariable=percent)
         find_and_replace_window.bind("<Return>", execute)
 
     def generate_random_text(self, event=None) -> None:
