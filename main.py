@@ -7,6 +7,7 @@ import tkinter.messagebox
 import os
 import json
 import random
+import sys
 
 class Icons:
     def __init__(self):
@@ -942,6 +943,12 @@ class Notepad:
                                         tearoff=tkinter.OFF,
                                         font=self.main_font)
 
+    def maximize_window(self) -> None:
+        if sys.platform == "linux":
+            self.window.attributes("-zoomed", True)
+        elif sys.platform == "win32":
+            self.window.state("zoomed")
+
     def initialize(self) -> None:
         self.window.title("Notepad--")
         self.window.iconphoto(True, self.icons.app_icon)
@@ -1093,7 +1100,7 @@ class Notepad:
         self.preferences_manager.load_themes()
         self.preferences_manager.load_preferences()
         self.window.update()
-        self.window.attributes("-zoomed", True)
+        self.maximize_window()
         self.window.bind("<Control-h>", self.editor_manager.find_and_replace)
         self.window.bind("<Control-f>", self.editor_manager.find)
         self.window.bind("<Control-s>", self.file_manager.save_file)
