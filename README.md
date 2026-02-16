@@ -20,10 +20,10 @@ The project was created in order to learn GUI development, and application archi
 ## Installation & Run
 
 1. Clone repository:
-   git clone https://github.com/yourname/notepad.git
+   git clone https://github.com/kzielinski04/Notepad--
 
 2. Navigate to project folder:
-   cd notepad
+   cd Notepad--
 
 3. Run:
    python3 main.py
@@ -31,18 +31,26 @@ The project was created in order to learn GUI development, and application archi
 
 ## Project Structure
 
-main.py
-│
-├── Notepad (Main application window)
-├── FileManager (File operations + autosave)
-├── EditorManager (Text operations)
-├── PreferencesManager (Themes & settings)
-└── Icons (UI assets)
+<pre>
+main.py 
+│ 
+├── Notepad (Main application window) 
+├── FileManager (File operations + autosave) 
+├── EditorManager (Text operations) 
+├── PreferencesManager (Themes & settings) 
+└── Icons (UI assets) 
+</pre>
 
 ## Screenshot
 
 ![App Screenshot](screenshot.png)
 
+## What I learned
+
+- Tkinter GUI development
+- Class-based architecture
+- Event-driven programming
+- Refactoring large methods
 
 ## Attribution
 
