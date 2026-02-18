@@ -43,7 +43,7 @@ main.py
 
 ## Screenshot
 
-![App Screenshot](screenshot.png)
+![App Screenshot](assets/screenshot.png)
 
 ## What I learned
 
