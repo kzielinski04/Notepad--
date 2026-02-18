@@ -295,23 +295,23 @@ class PreferencesManager:
             cancel_button.destroy()
             new_window.destroy()
         new_window = tkinter.Toplevel(self.notepad.window)
-        new_window.geometry("500x350")
+        new_window.geometry("200x350")
         new_window.resizable(False, False)
         new_window.title("Change Font Size")
         frame = tkinter.Frame(new_window)
         scale = tkinter.Scale(frame,
-                              from_=100,
+                              from_=200,
                               to=1,
                               length=250,
                               font=self.notepad.main_font)
         current_font = tkinter.font.Font(font=self.notepad.text["font"])
         scale.set(current_font["size"])
-        scale.pack(side=tkinter.TOP)
+        scale.pack(expand=True, fill=tkinter.BOTH)
         submit_button = tkinter.Button(frame,
                                        text="Submit",
                                        command=lambda: set_font_size(False),
                                        font=self.notepad.main_font)
-        submit_button.pack(side=tkinter.TOP)
+        submit_button.pack(side=tkinter.TOP, pady=5)
         cancel_button = tkinter.Button(frame,
                                        text="Cancel",
                                        command=lambda: set_font_size(True),
