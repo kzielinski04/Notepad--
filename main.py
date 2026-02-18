@@ -380,11 +380,13 @@ class PreferencesManager:
         def add_new_theme():
             def set_background_color() -> None:
                 background_color = tkinter.colorchooser.askcolor(title="Background Color")[1]
-                background_color_label.config(bg=background_color)
+                background_color_canvas.create_rectangle(0, 0, 36, 36, fill=background_color)
+                background_color_canvas.config(highlightbackground=background_color, bd=0, highlightthickness=1)
                 bg_color.set(background_color)
             def set_foreground_color() -> None:
                 foreground_color = tkinter.colorchooser.askcolor(title="Font Color")[1]
-                foreground_color_label.config(bg=foreground_color)
+                foreground_color_canvas.create_rectangle(0, 0, 36, 36, fill=foreground_color)
+                foreground_color_canvas.config(highlightbackground=foreground_color, bd=0, highlightthickness=1)
                 fg_color.set(foreground_color)
             def save():
                 theme_name.set(theme_name_entry.get())
@@ -427,12 +429,12 @@ class PreferencesManager:
             name_frame.pack(side=tkinter.TOP,
                             pady=5)
             background_color_frame = tkinter.Frame(main_frame)
-            background_color_label = tkinter.Label(background_color_frame,
-                                            width=5,
-                                            height=2,
-                                            bd=5,
+            background_color_canvas = tkinter.Canvas(background_color_frame,
+                                            width=36,
+                                            height=36,
+                                            bd=1,
                                             relief=tkinter.RAISED)
-            background_color_label.pack(side=tkinter.LEFT)
+            background_color_canvas.pack(side=tkinter.LEFT)
             background_color_button = tkinter.Button(background_color_frame,
                                                      text="Set background color",
                                                      command=set_background_color,
@@ -442,12 +444,12 @@ class PreferencesManager:
             background_color_frame.pack(side=tkinter.TOP,
                                         pady=5)
             foreground_color_frame = tkinter.Frame(main_frame)
-            foreground_color_label = tkinter.Label(foreground_color_frame,
-                                            width=5,
-                                            height=2,
-                                            bd=5,
+            foreground_color_canvas = tkinter.Canvas(foreground_color_frame,
+                                            width=36,
+                                            height=36,
+                                            bd=1,
                                             relief=tkinter.RAISED)
-            foreground_color_label.pack(side=tkinter.LEFT)
+            foreground_color_canvas.pack(side=tkinter.LEFT)
             foreground_color_button = tkinter.Button(foreground_color_frame,
                                                      text="Set font color",
                                                      command=set_foreground_color,
