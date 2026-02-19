@@ -202,7 +202,8 @@ class EditorManager:
                 find_and_replace_window.update_idletasks()
             self.clear_text()
             self.notepad.text.insert(1.0, result)
-            tkinter.messagebox.showinfo(title="Find & Replace Completed", message=f"Replaced {match_count} occurences")
+            tkinter.messagebox.showinfo(title="Find & Replace Completed",
+                                        message=f"Replaced {match_count} occurences")
             find_and_replace_window.destroy()
         if self.text_is_empty():
             tkinter.messagebox.showwarning(title="Empty File", message="This file is empty")

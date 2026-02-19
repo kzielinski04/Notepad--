@@ -11,6 +11,7 @@ from managers.editor_manager import EditorManager
 class Notepad:
     def __init__(self):
         self.window = tkinter.Tk()
+        self.file_name = tkinter.StringVar(value="Unnamed File")
         self.counters_frame = tkinter.Frame(self.window)
         self.main_frame = tkinter.Frame(self.window)
         self.main_font = tkinter.font.Font(family="DejaVu Sans Mono",
@@ -24,6 +25,9 @@ class Notepad:
         self.file_manager.add_editor_manager(self.editor_manager)
         self.editor_manager.add_file_manager(self.file_manager)
         self.preferences_manager = PreferencesManager(self)
+        self.file_name_label = tkinter.Label(self.counters_frame,
+                                             font=self.main_font,
+                                             text=f"File: {self.file_name.get()}")
         self.characters_count_label = tkinter.Label(self.counters_frame,
                                                       font=self.main_font,
                                                       text=f"Characters: {self.editor_manager.characters_count}")
@@ -202,10 +206,11 @@ class Notepad:
                                          image=self.icons.save_file_icon,
                                          compound=tkinter.LEFT)
         self.text.pack(expand=True, fill=tkinter.BOTH)
-        self.characters_count_label.grid(row=0, column=0, pady=5, padx=5)
-        self.words_count_label.grid(row=0, column=1, padx=75, pady=5)
-        self.line_number_label.grid(row=0, column=2, padx=5, pady=5)
-        self.column_number_label.grid(row=0, column=3, padx=75, pady=5)
+        self.file_name_label.grid(row=0, column=0, pady=5, padx=(5, 50))
+        self.characters_count_label.grid(row=0, column=1, padx=50, pady=5)
+        self.words_count_label.grid(row=0, column=2, padx=50, pady=5)
+        self.line_number_label.grid(row=0, column=3, padx=50, pady=5)
+        self.column_number_label.grid(row=0, column=4, padx=50, pady=5)
         self.counters_frame.pack(side=tkinter.BOTTOM, fill=tkinter.X)
         self.main_frame.grid_rowconfigure(1, weight=0)
         self.main_frame.grid_rowconfigure(0, weight=1)

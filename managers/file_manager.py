@@ -2,6 +2,7 @@ import tkinter
 import tkinter.filedialog
 import tkinter.messagebox
 import tkinter.font
+import os.path
 
 class FileManager:
     def __init__(self, notepad):
@@ -39,6 +40,7 @@ class FileManager:
             if choice:
                 self.save_file_as()
         self.clear_text()
+        self.notepad.file_name_label.config(text="File: Unnamed File")
 
     def open_file(self, event=None) -> None:
         file_content = self.notepad.text.get(1.0, "end-1c")
@@ -58,6 +60,9 @@ class FileManager:
                 content = f.read()
                 self.clear_text()
                 self.notepad.text.insert(1.0, content)
+                self.notepad.file_name_label.config(text=f"File: {os.path.basename(file_path)}")
+
+                
 
     def toggle_auto_save(self, event=None) -> None:
         def toggle_auto_save_execute(event=None):
@@ -106,6 +111,7 @@ class FileManager:
                 content = self.notepad.text.get(1.0, "end-1c")
                 f.write(content)
                 self.saved_content = content
+                self.notepad.file_name_label.config(text=f"File: {os.path.basename(self.saved_file_path)}")
 
     def save_file_as(self, event=None) -> None:
         self.file_path = tkinter.filedialog.asksaveasfilename(initialdir="/~/Desktop",
@@ -121,6 +127,7 @@ class FileManager:
             content = self.notepad.text.get(1.0, "end-1c")
             f.write(content)
             self.saved_content = content
+            self.notepad.file_name_label.config(text=f"File: {os.path.basename(self.saved_file_path)}")
 
     def exit(self) -> None:
         file_content = self.notepad.text.get(1.0, "end-1c")
