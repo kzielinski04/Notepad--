@@ -245,8 +245,18 @@ class PreferencesManager:
                     tkinter.messagebox.showwarning(title="Selection Error", message="No selection background color selected")
                     return
                 if not selection_fg_color.get():
-                    tkinter.messagebox.showwarning(title="Selection Error", message="No selection foreground color selected")
+                    tkinter.messagebox.showwarning(title="Selection Error", message="No selection font color selected")
                     return
+                if bg_color.get() == fg_color.get():
+                    choice = tkinter.messagebox.askyesno(title="Same Color Selected", 
+                                                         message="Text might not be readable as background and font colors are the same. Are you sure you want to continue?")
+                    if not choice:
+                        return
+                if selection_bg_color.get() == selection_fg_color.get():
+                    choice = tkinter.messagebox.askyesno(title="Same Color Selected", 
+                                                         message="Text might not be readable as selection background and selection font colors are the same. Are you sure you want to continue?")
+                    if not choice:
+                        return
                 new_theme = {
                     "theme_name": theme_name.get(),
                     "background_color": bg_color.get(),
