@@ -1,7 +1,8 @@
 {
     "background_color": "#000000",
-    "font_color": "#ff0000",
-    "selection_background_color": "#ff00be",
+    "font_color": "#ff88ff",
+    "selection_background_color": "#a188ff",
+    "selection_foreground_color": "#a18800",
     "font_family": "DejaVu Sans Mono",
     "font_weight": "normal",
     "font_slant": "roman",

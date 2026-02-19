@@ -36,6 +36,7 @@ class PreferencesManager:
     def save_preferences(self) -> None:
         current_font = tkinter.font.Font(font=self.notepad.text["font"])
         selection_background_color = self.notepad.text["selectbackground"]
+        selection_foreground_color = self.notepad.text["selectforeground"]
         background_color = self.notepad.text["bg"]
         font_color = self.notepad.text["fg"]
         font_family = current_font["family"]
@@ -47,6 +48,7 @@ class PreferencesManager:
             "background_color": background_color,
             "font_color": font_color,
             "selection_background_color": selection_background_color,
+            "selection_foreground_color": selection_foreground_color,
             "font_family": font_family,
             "font_weight": font_weight,
             "font_slant": font_slant,
@@ -84,7 +86,8 @@ class PreferencesManager:
                 self.notepad.text.config(bg=preferences.get("background_color", "black"),
                                  fg=preferences.get("font_color", "green"),
                                  font=saved_font,
-                                 selectbackground=preferences.get("selection_background_color", "#FFFF00"))
+                                 selectbackground=preferences.get("selection_background_color", "#FFFF00"),
+                                 selectforeground=preferences.get("selection_foreground_color", "#000000"))
 
     def set_preferences_to_default(self) -> None:
         current_font = tkinter.font.Font(font=self.notepad.text["font"])
@@ -95,7 +98,8 @@ class PreferencesManager:
                                 fg="green",
                                 font=("DejaVu Sans Mono", 16),
                                 wrap=tkinter.NONE,
-                                selectbackground="#FFFF00")
+                                selectbackground="#FFFF00",
+                                selectforeground="#000000")
                 self.notepad.file_manager.is_auto_save_enabled = False
     
     def change_font_style(self, new_font_style: str) -> None:
@@ -215,11 +219,16 @@ class PreferencesManager:
                 fg_color.set(foreground_color)
 
             def set_selection_background_color() -> None:
-                selection_background_color = tkinter.colorchooser.askcolor(title="Selection Color")[1]
+                selection_background_color = tkinter.colorchooser.askcolor(title="Selection Background Color")[1]
                 selection_background_color_canvas.create_rectangle(0, 0, 36, 36, fill=selection_background_color)
                 selection_background_color_canvas.config(highlightbackground=selection_background_color, bd=0, highlightthickness=1)
                 selection_bg_color.set(selection_background_color)
-                # self.notepad.text.config(selectbackground=selection_background_color)
+
+            def set_selection_foreground_color() -> None:
+                selection_foreground_color = tkinter.colorchooser.askcolor(title="Selection Font Color")[1]
+                selection_foreground_color_canvas.create_rectangle(0, 0, 36, 36, fill=selection_foreground_color)
+                selection_foreground_color_canvas.config(highlightbackground=selection_foreground_color, bd=0, highlightthickness=1)
+                selection_fg_color.set(selection_foreground_color)
 
             def save():
                 theme_name.set(theme_name_entry.get())
@@ -232,11 +241,18 @@ class PreferencesManager:
                 if not fg_color.get():
                     tkinter.messagebox.showwarning(title="No font color", message="Please, select the font color")
                     return
+                if not selection_bg_color.get():
+                    tkinter.messagebox.showwarning(title="Selection Error", message="No selection background color selected")
+                    return
+                if not selection_fg_color.get():
+                    tkinter.messagebox.showwarning(title="Selection Error", message="No selection foreground color selected")
+                    return
                 new_theme = {
                     "theme_name": theme_name.get(),
                     "background_color": bg_color.get(),
                     "foreground_color": fg_color.get(),
-                    "selection_background_color": selection_bg_color.get()
+                    "selection_background_color": selection_bg_color.get(),
+                    "selection_foreground_color": selection_fg_color.get()
                 }
                 self.themes.append(new_theme)
                 self.save_themes()
@@ -248,13 +264,13 @@ class PreferencesManager:
 
             add_theme_window = tkinter.Toplevel(new_window)
             main_frame = tkinter.Frame(add_theme_window)
-            add_theme_window.geometry("350x250")
             add_theme_window.resizable(False, False)
             add_theme_window.title("Add New Theme")
             theme_name = tkinter.StringVar()
             bg_color = tkinter.StringVar()
             fg_color = tkinter.StringVar()
             selection_bg_color = tkinter.StringVar()
+            selection_fg_color = tkinter.StringVar()
             name_frame = tkinter.Frame(main_frame)
             name_label = tkinter.Label(name_frame,
                                        text="Name: ",
@@ -303,12 +319,27 @@ class PreferencesManager:
                                                     relief=tkinter.RAISED)
             selection_background_color_canvas.pack(side=tkinter.LEFT)
             selection_background_color_button = tkinter.Button(selection_background_color_frame,
-                                                     text="Set Selection Color",
+                                                     text="Selection Background Color",
                                                      command=set_selection_background_color,
                                                      font=self.notepad.main_font,
                                                      width=31)
             selection_background_color_button.pack(side=tkinter.LEFT)
             selection_background_color_frame.pack(side=tkinter.TOP,
+                                        pady=5)
+            selection_foreground_color_frame = tkinter.Frame(main_frame)
+            selection_foreground_color_canvas = tkinter.Canvas(selection_foreground_color_frame,
+                                                    width=36,
+                                                    height=36,
+                                                    bd=1,
+                                                    relief=tkinter.RAISED)
+            selection_foreground_color_canvas.pack(side=tkinter.LEFT)
+            selection_foreground_color_button = tkinter.Button(selection_foreground_color_frame,
+                                                     text="Selection Font Color",
+                                                     command=set_selection_foreground_color,
+                                                     font=self.notepad.main_font,
+                                                     width=31)
+            selection_foreground_color_button.pack(side=tkinter.LEFT)
+            selection_foreground_color_frame.pack(side=tkinter.TOP,
                                         pady=5)
             button_frame = tkinter.Frame(main_frame)
             save_button = tkinter.Button(button_frame,
@@ -334,7 +365,8 @@ class PreferencesManager:
                 if theme_id[0] == index:
                     self.notepad.text.config(bg=theme["background_color"],
                                              fg=theme["foreground_color"],
-                                             selectbackground=theme["selection_background_color"])
+                                             selectbackground=theme["selection_background_color"],
+                                             selectforeground=theme["selection_foreground_color"])
                     return
             add_new_theme()
 
