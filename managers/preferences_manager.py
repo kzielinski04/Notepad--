@@ -35,6 +35,7 @@ class PreferencesManager:
 
     def save_preferences(self) -> None:
         current_font = tkinter.font.Font(font=self.notepad.text["font"])
+        selection_background_color = self.notepad.text["selectbackground"]
         background_color = self.notepad.text["bg"]
         font_color = self.notepad.text["fg"]
         font_family = current_font["family"]
@@ -45,6 +46,7 @@ class PreferencesManager:
         preferences = {
             "background_color": background_color,
             "font_color": font_color,
+            "selection_background_color": selection_background_color,
             "font_family": font_family,
             "font_weight": font_weight,
             "font_slant": font_slant,
@@ -81,7 +83,8 @@ class PreferencesManager:
                                   slant=preferences.get("font_slant", "roman"))
                 self.notepad.text.config(bg=preferences.get("background_color", "black"),
                                  fg=preferences.get("font_color", "green"),
-                                 font=saved_font)
+                                 font=saved_font,
+                                 selectbackground=preferences.get("selection_background_color", "#FFFF00"))
 
     def set_preferences_to_default(self) -> None:
         current_font = tkinter.font.Font(font=self.notepad.text["font"])
@@ -91,7 +94,8 @@ class PreferencesManager:
                 self.notepad.text.config(bg="black",
                                 fg="green",
                                 font=("DejaVu Sans Mono", 16),
-                                wrap=tkinter.NONE)
+                                wrap=tkinter.NONE,
+                                selectbackground="#FFFF00")
                 self.notepad.file_manager.is_auto_save_enabled = False
     
     def change_font_style(self, new_font_style: str) -> None:
@@ -203,11 +207,20 @@ class PreferencesManager:
                 background_color_canvas.create_rectangle(0, 0, 36, 36, fill=background_color)
                 background_color_canvas.config(highlightbackground=background_color, bd=0, highlightthickness=1)
                 bg_color.set(background_color)
+
             def set_foreground_color() -> None:
                 foreground_color = tkinter.colorchooser.askcolor(title="Font Color")[1]
                 foreground_color_canvas.create_rectangle(0, 0, 36, 36, fill=foreground_color)
                 foreground_color_canvas.config(highlightbackground=foreground_color, bd=0, highlightthickness=1)
                 fg_color.set(foreground_color)
+
+            def set_selection_background_color() -> None:
+                selection_background_color = tkinter.colorchooser.askcolor(title="Selection Color")[1]
+                selection_background_color_canvas.create_rectangle(0, 0, 36, 36, fill=selection_background_color)
+                selection_background_color_canvas.config(highlightbackground=selection_background_color, bd=0, highlightthickness=1)
+                selection_bg_color.set(selection_background_color)
+                # self.notepad.text.config(selectbackground=selection_background_color)
+
             def save():
                 theme_name.set(theme_name_entry.get())
                 if not theme_name.get():
@@ -222,14 +235,17 @@ class PreferencesManager:
                 new_theme = {
                     "theme_name": theme_name.get(),
                     "background_color": bg_color.get(),
-                    "foreground_color": fg_color.get()
+                    "foreground_color": fg_color.get(),
+                    "selection_background_color": selection_bg_color.get()
                 }
                 self.themes.append(new_theme)
                 self.save_themes()
                 refresh_themes()
                 add_theme_window.destroy()
+
             def cancel():
                 add_theme_window.destroy()
+
             add_theme_window = tkinter.Toplevel(new_window)
             main_frame = tkinter.Frame(add_theme_window)
             add_theme_window.geometry("350x250")
@@ -238,6 +254,7 @@ class PreferencesManager:
             theme_name = tkinter.StringVar()
             bg_color = tkinter.StringVar()
             fg_color = tkinter.StringVar()
+            selection_bg_color = tkinter.StringVar()
             name_frame = tkinter.Frame(main_frame)
             name_label = tkinter.Label(name_frame,
                                        text="Name: ",
@@ -256,7 +273,7 @@ class PreferencesManager:
                                             relief=tkinter.RAISED)
             background_color_canvas.pack(side=tkinter.LEFT)
             background_color_button = tkinter.Button(background_color_frame,
-                                                     text="Set background color",
+                                                     text="Set Background Color",
                                                      command=set_background_color,
                                                      font=self.notepad.main_font,
                                                      width=31)
@@ -271,12 +288,27 @@ class PreferencesManager:
                                             relief=tkinter.RAISED)
             foreground_color_canvas.pack(side=tkinter.LEFT)
             foreground_color_button = tkinter.Button(foreground_color_frame,
-                                                     text="Set font color",
+                                                     text="Set Font Color",
                                                      command=set_foreground_color,
                                                      font=self.notepad.main_font,
                                                      width=31)
             foreground_color_button.pack(side=tkinter.LEFT)
             foreground_color_frame.pack(side=tkinter.TOP,
+                                        pady=5)
+            selection_background_color_frame = tkinter.Frame(main_frame)
+            selection_background_color_canvas = tkinter.Canvas(selection_background_color_frame,
+                                                    width=36,
+                                                    height=36,
+                                                    bd=1,
+                                                    relief=tkinter.RAISED)
+            selection_background_color_canvas.pack(side=tkinter.LEFT)
+            selection_background_color_button = tkinter.Button(selection_background_color_frame,
+                                                     text="Set Selection Color",
+                                                     command=set_selection_background_color,
+                                                     font=self.notepad.main_font,
+                                                     width=31)
+            selection_background_color_button.pack(side=tkinter.LEFT)
+            selection_background_color_frame.pack(side=tkinter.TOP,
                                         pady=5)
             button_frame = tkinter.Frame(main_frame)
             save_button = tkinter.Button(button_frame,
@@ -301,7 +333,8 @@ class PreferencesManager:
             for (index, theme) in zip(range(len(self.themes)), self.themes):
                 if theme_id[0] == index:
                     self.notepad.text.config(bg=theme["background_color"],
-                                             fg=theme["foreground_color"])
+                                             fg=theme["foreground_color"],
+                                             selectbackground=theme["selection_background_color"])
                     return
             add_new_theme()
 
@@ -331,6 +364,7 @@ class PreferencesManager:
             themes_listbox.destroy()
             select_button.destroy()
             new_window.destroy()
+
         def refresh_themes():
             themes_listbox.delete(0, tkinter.END)
             for theme in self.themes:
@@ -358,9 +392,7 @@ class PreferencesManager:
             themes_listbox.insert(tkinter.END, theme["theme_name"])
         themes_listbox.insert(tkinter.END, "[ADD NEW THEME]")
         for (index, theme) in zip(range(themes_listbox.size()), self.themes):
-            themes_listbox.itemconfig(index,
-                                    bg=theme["background_color"],
-                                    fg=theme["foreground_color"])
+            themes_listbox.itemconfig(index, bg=theme["background_color"], fg=theme["foreground_color"])
         themes_listbox.itemconfig(tkinter.END,
                                   bg="#27ae60",
                                   fg="white",

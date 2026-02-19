@@ -142,6 +142,7 @@ class FileManager:
         current_preferences = {
             "background_color": self.notepad.text["bg"],
             "font_color": self.notepad.text["fg"],
+            "selection_background_color": self.notepad.text["selectbackground"],
             "font_family": current_font["family"],
             "font_weight": current_font["weight"],
             "font_slant": current_font["slant"],

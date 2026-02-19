@@ -2,46 +2,61 @@
     {
         "theme_name": "Matrix (Default)",
         "background_color": "black",
-        "foreground_color": "green"
+        "foreground_color": "green",
+        "selection_background_color": "yellow"
     },
     {
         "theme_name": "Dark Theme",
         "background_color": "black",
-        "foreground_color": "white"
+        "foreground_color": "white",
+        "selection_background_color": "yellow"
     },
     {
         "theme_name": "Light Theme",
         "background_color": "white",
-        "foreground_color": "black"
+        "foreground_color": "black",
+        "selection_background_color": "yellow"
     },
     {
         "theme_name": "Solarized Light",
         "background_color": "#FDF6E3",
-        "foreground_color": "#657B83"
+        "foreground_color": "#657B83",
+        "selection_background_color": "yellow"
     },
     {
         "theme_name": "Solarized Dark",
         "background_color": "#002B36",
-        "foreground_color": "#839496"
+        "foreground_color": "#839496",
+        "selection_background_color": "yellow"
     },
     {
         "theme_name": "Monokai",
         "background_color": "#272822",
-        "foreground_color": "#F8F8F2"
+        "foreground_color": "#F8F8F2",
+        "selection_background_color": "yellow"
     },
     {
         "theme_name": "Dracula",
         "background_color": "#282A36",
-        "foreground_color": "#F8F8F2"
+        "foreground_color": "#F8F8F2",
+        "selection_background_color": "yellow"
     },
     {
         "theme_name": "Gruvbox Dark",
         "background_color": "#282828",
-        "foreground_color": "#EBDBB2"
+        "foreground_color": "#EBDBB2",
+        "selection_background_color": "yellow"
     },
     {
         "theme_name": "Gruvbox Light",
         "background_color": "#FBF1C7",
-        "foreground_color": "#3C3836"
+        "foreground_color": "#3C3836",
+        "selection_background_color": "yellow"
+    },
+    {
+        "theme_name": "s",
+        "background_color": "#000000",
+        "foreground_color": "#ff0000",
+        "selection_background_color": "#ff00be"
     }
 ]
